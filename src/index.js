@@ -43,6 +43,23 @@ return res.status(200).json(talkerInfo);
 
 // requisito 2 /talker/:id
 
+const getId = async (id) => {
+  const talker = await getAllTalker();
+  return talker.find((talkers) => talkers.id === id);
+};
+
+app.get('/talker/:id', async (req, res) => {
+const { id } = req.params;
+const talker = await getId(Number(id));
+if (!talker) {
+  return res.status(404).json({
+    message: 'Pessoa palestrante não encontrada',
+  });
+}
+return res.status(200).json(talker);
+});
+
 module.exports = {
   readFile,
+  getId,
 };
