@@ -2,6 +2,11 @@ const express = require('express');
 
 const fs = require('fs').promises;
 const path = require('path');
+const { 
+  validateEmail, 
+  validateEmailRegex, 
+  validatePassword, 
+  validatePasswordLength } = require('./middleware/validate');
 
 const JSON_PATH = path.resolve(__dirname, 'talker.json');
 
@@ -73,7 +78,15 @@ const generateToken = () => {
     return token;
   };
 
-app.post('/login', async (_req, res) => res.status(200).json({ token: generateToken() }));
+app.post('/login', 
+validateEmail,
+validateEmailRegex,
+validatePassword,
+validatePasswordLength,
+ async (_req, res) => res.status(200).json({ token: generateToken() }));
+
+// requisito 4 /login
+// realizado middleware e chamdo acima
 
 module.exports = {
   readFile,
