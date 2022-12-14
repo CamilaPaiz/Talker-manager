@@ -59,6 +59,22 @@ if (!talker) {
 return res.status(200).json(talker);
 });
 
+// requisito 3 /login
+// código para gerar token da aula da turma B e realizado com ajuda do colega José Felipe
+const tokenLength = 16;
+const generateToken = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let token = '';
+    
+    for (let i = 0; i < tokenLength; i += 1) {
+      token
+       += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return token;
+  };
+
+app.post('/login', async (_req, res) => res.status(200).json({ token: generateToken() }));
+
 module.exports = {
   readFile,
   getId,
