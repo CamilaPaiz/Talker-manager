@@ -99,8 +99,8 @@ validatePasswordLength,
 
 app.post('/talker',
 validateAutorization,
-validateAge, 
 validateName, 
+validateAge, 
 validateTalk,
 validateTalkRate,
 validateWatchedAt,
@@ -126,52 +126,43 @@ async (req, res) => {
 });
 
 // requisito 6 put /talker/:id
- /*  app.put('/talker/:id',
-validateTalk,
-validateAutorization,
+app.put('/talker/:id', 
+validateAutorization, 
 validateName,
 validateAge,
+validateTalk,
 validateWatchedAt,
 validateTalkRate,
 
  async (req, res) => {
   const { id } = req.params;
-  const { name, age, rate, watchedAt } = req.body;
-  const talker = await getAllTalker();
+  const { name, age, talk } = req.body;
+  const talker = await readFile(JSON_PATH);
 
-  const newTalker = talker.find(
-      (talkers) => talkers.id === Number(id),
-);
-  
- newTalker.talk.rate = rate;
- newTalker.name = name;
- newTalker.age = age;
- newTalker.talk.watchedAt = watchedAt;
-
-  return res.status(200).json(talker);
+  const indexTalker = talker.findIndex((talkers) => talkers.id === Number(id));
+  talker[indexTalker] = { id: Number(id), name, age, talk };
+  const updatedTalker = JSON.stringify(talker, null, 2);
+    await fs.writeFile(JSON_PATH, updatedTalker);
+    res.status(200).json(talker[indexTalker]);
 });
- */
+
 // requisito 7 delete /talker/:id
 
-   /* const deleteTalker = async (id) => {
-  const talker = await getAllTalker();
-  const talkerAfterDelete = talker.filter((talkers) => talkers.id !== id);
-  await writeFile(talkerAfterDelete, JSON_PATH);
-  return talkerAfterDelete;
-};
+ app.delete('talker/:id', validateAutorization, async (req, res) => {
+    const { id } = req.params;
+    const talker = await readFile(JSON_PATH);
+    const talkerAfterDelete = talker.filter((talkers) => talkers.id !== Number(id));
+    const newTalkers = JSON.stringify(talkerAfterDelete, null, 2);
+    await fs.writeFile(JSON_PATH, newTalkers);
+  res.status(204).end();
+});    
 
-app.delete('talker/:id', validateAutorization, async (req, res) => {
-  const { id } = req.params;
-   await deleteTalker(id);
-  return res.status(204).json();
-});   */
- 
 // requisito 8 get /talker/search?q=searchTerm
 
-  /* app.get('/talker', validateAutorization, async (req, res) => {
-const { name } = req.query;
+   app.get('/talker', validateAutorization, async (req, res) => {
+const { query } = req.query;
 const talker = await getAllTalker();
-const queryTalker = talker.filter((talkers) => talkers.name === name);
+const queryTalker = talker.filter((talkers) => talkers.query === query);
 if (!queryTalker) {
   return res.status(200).json(talker);
 }
@@ -179,7 +170,7 @@ if (queryTalker !== talker) {
   return res.status(200).json([]);
 }
 return res.status(200).json(queryTalker);
-});  */
+});  
 module.exports = {
   readFile,
   getId,

@@ -95,7 +95,7 @@ const validateAge = (req, res, next) => {
 
         const validateTalkRate = (req, res, next) => {
             const { rate } = req.body.talk;    
-        if (!rate) {
+        if (rate === undefined) {
              return res.status(400).json({
                   message: 'O campo "rate" é obrigatório' });
        }
@@ -104,9 +104,10 @@ const validateAge = (req, res, next) => {
                 { message: 'O campo "rate" deve ser um inteiro de 1 à 5' },
       ); 
        } 
+        
        next();
         };
-
+ 
         const validateAutorization = (req, res, next) => {
             const { authorization } = req.headers;
 
