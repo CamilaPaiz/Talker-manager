@@ -163,7 +163,7 @@ validateTalkRate,
 const { query } = req.query;
 const talker = await getAllTalker();
 const queryTalker = talker.filter((talkers) => talkers.query === query);
-if (!queryTalker) {
+if (queryTalker === undefined) {
   return res.status(200).json(talker);
 }
 if (queryTalker !== talker) {
