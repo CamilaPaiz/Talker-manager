@@ -148,18 +148,18 @@ validateTalkRate,
 
 // requisito 7 delete /talker/:id
 
- app.delete('talker/:id', validateAutorization, async (req, res) => {
+  app.delete('/talker/:id', validateAutorization, async (req, res) => {
     const { id } = req.params;
     const talker = await readFile(JSON_PATH);
     const talkerAfterDelete = talker.filter((talkers) => talkers.id !== Number(id));
     const newTalkers = JSON.stringify(talkerAfterDelete, null, 2);
     await fs.writeFile(JSON_PATH, newTalkers);
   res.status(204).end();
-});    
+});     
 
 // requisito 8 get /talker/search?q=searchTerm
 
-   app.get('/talker', validateAutorization, async (req, res) => {
+  /*  app.get('/talker', validateAutorization, async (req, res) => {
 const { query } = req.query;
 const talker = await getAllTalker();
 const queryTalker = talker.filter((talkers) => talkers.query === query);
@@ -170,7 +170,7 @@ if (queryTalker !== talker) {
   return res.status(200).json([]);
 }
 return res.status(200).json(queryTalker);
-});  
+});   */
 module.exports = {
   readFile,
   getId,
