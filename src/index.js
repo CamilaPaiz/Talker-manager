@@ -159,18 +159,20 @@ validateTalkRate,
 
 // requisito 8 get /talker/search?q=searchTerm
 
-  /*  app.get('/talker', validateAutorization, async (req, res) => {
-const { query } = req.query;
-const talker = await getAllTalker();
-const queryTalker = talker.filter((talkers) => talkers.query === query);
-if (queryTalker === undefined) {
+    app.get('/talker/search?q=searchTerm', validateAutorization, async (req, res) => {
+const query = req.query.q;
+const talker = await readFile(JSON_PATH);
+const queryTalker = talker.filter((talkers) => talkers.name.includes(query));
+
+ if (!query) {
   return res.status(200).json(talker);
-}
-if (queryTalker !== talker) {
+}  
+ if (queryTalker !== talker) {
   return res.status(200).json([]);
-}
+} 
+ 
 return res.status(200).json(queryTalker);
-});   */
+});   
 module.exports = {
   readFile,
   getId,
